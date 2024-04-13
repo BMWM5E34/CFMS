@@ -1,4 +1,6 @@
-﻿namespace CFMS
+﻿using CFMS.Models;
+
+namespace CFMS
 {
     public partial class App : Application
     {
@@ -6,7 +8,15 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            var user = User.GetUsername();
+            if (user!=null)
+            {
+                MainPage = new VerificationPage();
+            }
+            else
+            {
+                MainPage = new NavigationPage(new LoginPage());
+            }
         }
     }
 }
