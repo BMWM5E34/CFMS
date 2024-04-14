@@ -27,7 +27,7 @@ namespace CFMS.Models
         public void SaveToJson()
         {
             string directory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string filePath = Path.Combine(directory, "user.json");
+            string filePath = Path.Combine(directory, "CFMS_User.json");
 
             var userObj = new
             {
@@ -44,7 +44,7 @@ namespace CFMS.Models
         public static User LoadFromJson()
         {
             string directory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string filePath = Path.Combine(directory, "user.json");
+            string filePath = Path.Combine(directory, "CFMS_User.json");
 
             if (!File.Exists(filePath))
             {

@@ -88,4 +88,8 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Resources\Images\coin\" />
+	</ItemGroup>
+
 </Project>

@@ -8,10 +8,25 @@ namespace CFMS
         public WalletPage()
         {
             InitializeComponent();
+            DisplayMnemonicPhrase();
+        }
 
-            string username = User.GetUsername();
+        private void DisplayMnemonicPhrase()
+        {
+            string Username = User.GetUsername();
+            ProfileNameLabel.Text = "Profile: " + Username;
+        }
+        private void Settings_clicked(object sender, EventArgs e)
+        {
 
-            UsernameLabel.Text = $"Hello, {username}!";
+        }
+        private void OnSendButton_clicked(object sender, EventArgs e)
+        {
+
+        }
+        private void OnReceiveButton_clicked(object sender, EventArgs e)
+        {
+
         }
     }
 }
