@@ -2,6 +2,7 @@
 using CFMS.Models;
 using CFMS.Crypto;
 using Crypto;
+
 namespace CFMS
 {
     public partial class WalletPage : ContentPage
@@ -58,7 +59,7 @@ namespace CFMS
         }
         private void OnSendButton_clicked(object sender, EventArgs e)
         {
-
+            Bitcoin.SendBitcoin();
         }
         private void BalanceLabel(object sender, EventArgs e)
         {
