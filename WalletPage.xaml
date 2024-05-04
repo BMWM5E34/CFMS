@@ -28,14 +28,16 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <Button Text="▼" TextColor="#fff" BackgroundColor="Transparent" Grid.Row="0" />
                     <Image Source="btc.png" HeightRequest="100" WidthRequest="100" Aspect="AspectFit" Grid.Row="1" />
 
                     <Label x:Name="Balance_Label" Grid.Row="2" FontSize="20" TextColor="#F7931A" HorizontalOptions="Center" Margin="0,10,0,0"/>
-
-                    <StackLayout Grid.Row="3" HorizontalOptions="Center" Orientation="Horizontal" Margin="0,30,0,0">
+                    <Label x:Name="ConvertToUsd_Label" Grid.Row="3" FontSize="20" TextColor="#86DE74" HorizontalOptions="Center" Margin="0,10,0,0"/>
+                    
+                    <StackLayout Grid.Row="4" HorizontalOptions="Center" Orientation="Horizontal" Margin="0,30,0,0">
                         <Button Clicked="OnSendButton_clicked"
                                 Text="Send"
                                 TextColor="#fff"
@@ -56,7 +58,7 @@
                                 CornerRadius="20"/>
 
                     </StackLayout>
-                    <BoxView Grid.Row="4" Color="#F7931A" HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="0,200,0,10"/>
+                    <BoxView Grid.Row="5" Color="#F7931A" HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="0,200,0,10"/>
                 </Grid>
             </StackLayout>
         </StackLayout>
