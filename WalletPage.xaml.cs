@@ -9,9 +9,11 @@ namespace CFMS
     {
         public WalletPage()
         {
+            
             InitializeComponent();
             DisplayProfileName();
             DisplayBalance();
+            DisplayBtcToUsd();
         }
 
         private void DisplayProfileName()
@@ -23,6 +25,35 @@ namespace CFMS
         {
             DisplayBalance();
         }
+
+        private async void DisplayBtcToUsd()
+        {
+            try
+            {
+                decimal rate = Bitcoin.GetRateBtc();
+
+                string str_btc_balance = Balance_Label.Text;
+
+                // Удаляем слово "BTC" из строки баланса
+                str_btc_balance = str_btc_balance.Replace(" BTC", "");
+
+                if (decimal.TryParse(str_btc_balance, out decimal btc_balance))
+                {
+                    decimal balance = rate * btc_balance;
+
+                    ConvertToUsd_Label.Text = $"$ {balance}";
+                }
+                else
+                {
+                    ConvertToUsd_Label.Text = "Invalid BTC balance format";
+                }
+            }
+            catch (Exception ex)
+            {
+                ConvertToUsd_Label.Text = $"Error: {ex.Message}";
+            }
+        }
+
         private async void DisplayBalance()
         {
             try
@@ -32,7 +63,7 @@ namespace CFMS
                 if (bitcoinAddress != null)
                 {
                     decimal balance = Bitcoin.GetBitcoinBalance(bitcoinAddress);
-                    //decimal balance = 1;
+                    //double balance = 0.00011765;
 
                     if (Balance_Label != null)
                     {
@@ -57,9 +88,9 @@ namespace CFMS
         {
 
         }
-        private void OnSendButton_clicked(object sender, EventArgs e)
+        private async void OnSendButton_clicked(object sender, EventArgs e)
         {
-            Bitcoin.SendBitcoin();
+            await Navigation.PushAsync(new SendPage());
         }
         private void BalanceLabel(object sender, EventArgs e)
         {
