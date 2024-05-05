@@ -18,7 +18,11 @@ public partial class VerificationPage : ContentPage
 
         if (enteredPassword == user.Password)
         {
-            Application.Current.MainPage = new WalletPage();
+            var walletPage = new WalletPage();
+
+            Application.Current.MainPage = new NavigationPage(walletPage);
+
+            walletPage.Navigation.PopToRootAsync();
         }
         else
         {

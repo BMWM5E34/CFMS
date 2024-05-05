@@ -13,7 +13,6 @@ namespace Crypto
     public class Bitcoin
     {
         private static Network networkType = Network.TestNet;
-
         public static void GenerateBitcoinAddressFromSeed(string mnemonicPhrase)
         {
             ExtKey extendedKey = new Mnemonic(mnemonicPhrase).DeriveExtKey();
@@ -26,6 +25,7 @@ namespace Crypto
         public static decimal GetBitcoinBalance(string bitcoinAddress)
         {
             string url = $"https://blockstream.info/testnet/api/address/{bitcoinAddress}/utxo";
+
             using (WebClient client = new WebClient())
             {
                 string json = client.DownloadString(url);
