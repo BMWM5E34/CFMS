@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CFMS.ImportWalletPage">
+    <Grid HorizontalOptions="Center" VerticalOptions="Center" ColumnSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackLayout Grid.Column="0" Grid.Row="0" VerticalOptions="Center" Spacing="10">
+            <Entry x:Name="Word1Entry" Placeholder="Word 1" WidthRequest="150"/>
+            <Entry x:Name="Word2Entry" Placeholder="Word 2" WidthRequest="150"/>
+            <Entry x:Name="Word3Entry" Placeholder="Word 3" WidthRequest="150"/>
+            <Entry x:Name="Word4Entry" Placeholder="Word 4" WidthRequest="150"/>
+            <Entry x:Name="Word5Entry" Placeholder="Word 5" WidthRequest="150"/>
+            <Entry x:Name="Word6Entry" Placeholder="Word 6" WidthRequest="150"/>
+        </StackLayout>
+        <StackLayout Grid.Column="1" Grid.Row="0" VerticalOptions="Center" Spacing="10">
+            <Entry x:Name="Word7Entry" Placeholder="Word 7" WidthRequest="150"/>
+            <Entry x:Name="Word8Entry" Placeholder="Word 8" WidthRequest="150"/>
+            <Entry x:Name="Word9Entry" Placeholder="Word 9" WidthRequest="150"/>
+            <Entry x:Name="Word10Entry" Placeholder="Word 10" WidthRequest="150"/>
+            <Entry x:Name="Word11Entry" Placeholder="Word 11" WidthRequest="150"/>
+            <Entry x:Name="Word12Entry" Placeholder="Word 12" WidthRequest="150"/>
+        </StackLayout>
+        <Button Text="Import" Clicked="ImportButton_Clicked" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" HorizontalOptions="Center" Margin="0,20" WidthRequest="120"/>
+    </Grid>
+</ContentPage>

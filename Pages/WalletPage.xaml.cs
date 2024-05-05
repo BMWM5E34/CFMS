@@ -35,14 +35,13 @@ namespace CFMS
                 //decimal rate = 64000;
                 string str_btc_balance = Balance_Label.Text;
 
-                // Удаляем слово "BTC" из строки баланса
                 str_btc_balance = str_btc_balance.Replace(" BTC", "");
 
                 if (decimal.TryParse(str_btc_balance, out decimal btc_balance))
                 {
                     decimal balance = rate * btc_balance;
 
-                    ConvertToUsd_Label.Text = $"$ {balance}";
+                    ConvertToUsd_Label.Text = $"$ {balance.ToString("0.00")}";
                 }
                 else
                 {
@@ -58,7 +57,12 @@ namespace CFMS
         {
             MainUSDBalance.Text = ConvertToUsd_Label.Text;
         }
-
+        private void OnRefreshClicked(object sender, EventArgs e)
+        {
+            DisplayBalance();
+            DisplayBtcToUsd();
+            DisplayMainUSDBalance();
+        }
         private async void DisplayBalance()
         {
             try
@@ -92,6 +96,12 @@ namespace CFMS
         private void Settings_clicked(object sender, EventArgs e)
         {
 
+        }
+        private void refresh_clicked(object sender, EventArgs e)
+        {
+            DisplayBalance();
+            DisplayBtcToUsd();
+            DisplayMainUSDBalance();
         }
         private async void OnSendButton_clicked(object sender, EventArgs e)
         {
