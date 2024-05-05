@@ -1,13 +1,14 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             BackgroundColor="#fff"
              x:Class="CFMS.WalletPage">
+    
     <Grid BackgroundColor="#24272A">
-        <StackLayout Margin="5" >
+        <StackLayout>
             <Grid>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
                     <Image Source="box.png" HeightRequest="80" WidthRequest="80" Margin="20,0,0,0"/>
-                    <Label Text="$" FontSize="16" VerticalOptions="Center" Margin="20,0,0,0" TextColor="#00DCA7"/>
-                    <Label Text="1000" FontSize="20" VerticalOptions="Center"/>
+                    <Label x:Name="MainUSDBalance" FontSize="20" VerticalOptions="Center" TextColor="#00DCA7"/>
                 </StackLayout>
 
                 <Label x:Name="ProfileNameLabel"
@@ -19,7 +20,7 @@
                     <Button Clicked="Settings_clicked" ImageSource="settings.png" BackgroundColor="Transparent"></Button>
                 </StackLayout>
             </Grid>
-
+            
             <StackLayout BackgroundColor="#1E2327" VerticalOptions="FillAndExpand">
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
@@ -56,7 +57,7 @@
                                 BorderColor="#F7931A"
                                 WidthRequest="150"
                                 CornerRadius="20"/>
-
+                        
                     </StackLayout>
                     <BoxView Grid.Row="5" Color="#F7931A" HorizontalOptions="FillAndExpand" HeightRequest="1" Margin="0,200,0,10"/>
                 </Grid>

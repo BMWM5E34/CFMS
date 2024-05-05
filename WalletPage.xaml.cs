@@ -14,6 +14,7 @@ namespace CFMS
             DisplayProfileName();
             DisplayBalance();
             DisplayBtcToUsd();
+            DisplayMainUSDBalance();
         }
 
         private void DisplayProfileName()
@@ -31,7 +32,7 @@ namespace CFMS
             try
             {
                 decimal rate = Bitcoin.GetRateBtc();
-
+                //decimal rate = 64000;
                 string str_btc_balance = Balance_Label.Text;
 
                 // Удаляем слово "BTC" из строки баланса
@@ -52,6 +53,10 @@ namespace CFMS
             {
                 ConvertToUsd_Label.Text = $"Error: {ex.Message}";
             }
+        }
+        private void DisplayMainUSDBalance()
+        {
+            MainUSDBalance.Text = ConvertToUsd_Label.Text;
         }
 
         private async void DisplayBalance()
@@ -92,6 +97,7 @@ namespace CFMS
         {
             await Navigation.PushAsync(new SendPage());
         }
+
         private void BalanceLabel(object sender, EventArgs e)
         {
 
