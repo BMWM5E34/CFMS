@@ -9,26 +9,6 @@ namespace CFMS.Crypto
 {
     internal class Other
     {
-        public static string GetAddress(string coinName)
-        {
-            string directory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string filePath = Path.Combine(directory, "CFMS_Addresses.json");
-
-            if (!File.Exists(filePath))
-            {
-                return null;
-            }
-
-            string json = File.ReadAllText(filePath);
-            Dictionary<string, string> addressesObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-
-            if (addressesObject.ContainsKey(coinName))
-            {
-                return addressesObject[coinName];
-            }
-
-            return null;
-        }
         public static void WriteAddressToJson(string coinName, string address)
         {
             string directory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);

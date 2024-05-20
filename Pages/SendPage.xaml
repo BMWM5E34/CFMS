@@ -20,9 +20,6 @@
             </Picker.ItemsSource>
         </Picker>
 
-        <Entry x:Name="FeeEntry" Placeholder="Shipping fee ( SATOSHI )" Margin="0,0,0,20" TextChanged="OnEntryChanged" Keyboard="Numeric" />
-
-
         <Button x:Name="SendBitcoinButton" BackgroundColor="#F7931A" Text="Send Bitcoin" Clicked="OnSendBTCClicked" TextColor="#fff"/>
     </VerticalStackLayout>
 </ContentPage>

@@ -20,15 +20,14 @@ public partial class ImportWalletPage : ContentPage
 
         try
         {
-            Bitcoin.GenerateBitcoinAddressFromSeed(mnemonicPhrase);
+            btc.GenerateBitcoinAddressFromSeed(mnemonicPhrase);
 
-            var NewWalletPage = new NewWalletPage();
-
-            Application.Current.MainPage = new NavigationPage(NewWalletPage);
-
-            NewWalletPage.Navigation.PopToRootAsync();
+            var ExistingWalletPage = new ExistingWalletPage(mnemonicPhrase);
 
 
+            Application.Current.MainPage = new NavigationPage(ExistingWalletPage);
+
+            ExistingWalletPage.Navigation.PopToRootAsync();
         }
         catch (Exception ex)
         {

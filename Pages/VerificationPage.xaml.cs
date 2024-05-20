@@ -14,9 +14,7 @@ public partial class VerificationPage : ContentPage
     {
         string enteredPassword = PasswordEntry.Text;
 
-        User user = User.LoadFromJson();
-
-        if (enteredPassword == user.Password)
+        if (enteredPassword == User.GetUserPassword())
         {
             var walletPage = new WalletPage();
 
@@ -29,12 +27,12 @@ public partial class VerificationPage : ContentPage
             ErrorMessage.Text = "Incorrect password. Please try again.";
         }
     }
-    private void OnRestoreClicked(object sender, EventArgs e)
+    private async void OnRestoreClicked(object sender, EventArgs e)
     {
-
+        await Navigation.PushAsync(new ImportWalletPage());
     }
     private void OnQuitClicked(object sender, EventArgs e)
     {
-
+        Application.Current.Quit();
     }
 }

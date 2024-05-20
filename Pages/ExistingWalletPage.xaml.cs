@@ -6,12 +6,14 @@ using CFMS.Models;
 
 namespace CFMS
 {
-    public partial class NewWalletPage : ContentPage
+    public partial class ExistingWalletPage : ContentPage
     {
+        private string mnemonicPhrase;
 
-        public NewWalletPage()
+        public ExistingWalletPage(string mnemonicPhrase)
         {
             InitializeComponent();
+            this.mnemonicPhrase = mnemonicPhrase;
             UsernameEntry.TextChanged += Entry_TextChanged;
             PasswordEntry.TextChanged += Entry_TextChanged;
             ConfirmPasswordEntry.TextChanged += Entry_TextChanged;
@@ -21,7 +23,7 @@ namespace CFMS
         {
             bool isValid = !string.IsNullOrWhiteSpace(UsernameEntry.Text) && !string.IsNullOrWhiteSpace(PasswordEntry.Text) && !string.IsNullOrWhiteSpace(ConfirmPasswordEntry.Text);
 
-            if (isValid && (!IsEnglish(UsernameEntry.Text) || !IsEnglish(PasswordEntry.Text) || !IsEnglish(ConfirmPasswordEntry.Text))) 
+            if (isValid && (!IsEnglish(UsernameEntry.Text) || !IsEnglish(PasswordEntry.Text) || !IsEnglish(ConfirmPasswordEntry.Text)))
             {
                 ErrorLabel.Text = "Please enter username and password only in English.";
                 isValid = false;

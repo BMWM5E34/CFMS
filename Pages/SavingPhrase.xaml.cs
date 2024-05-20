@@ -18,7 +18,11 @@ namespace CFMS
 
         private void ContinueButton_Clicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new WalletPage();
+            var walletPage = new WalletPage();
+
+            Application.Current.MainPage = new NavigationPage(walletPage);
+
+            walletPage.Navigation.PopToRootAsync();
         }
     }
 }

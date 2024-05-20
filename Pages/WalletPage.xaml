@@ -1,6 +1,5 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             BackgroundColor="#fff"
              x:Class="CFMS.WalletPage">
     
     <Grid BackgroundColor="#24272A">
@@ -36,8 +35,8 @@
                     <Button Text="▼" TextColor="#fff" BackgroundColor="Transparent" Grid.Row="0" />
                     <Image Source="btc.png" HeightRequest="100" WidthRequest="100" Aspect="AspectFit" Grid.Row="1" />
 
-                    <Label x:Name="Balance_Label" Grid.Row="2" FontSize="20" TextColor="#F7931A" HorizontalOptions="Center" Margin="0,10,0,0"/>
-                    <Label x:Name="ConvertToUsd_Label" Grid.Row="3" FontSize="20" TextColor="#86DE74" HorizontalOptions="Center" Margin="0,10,0,0"/>
+                    <Label x:Name="Balance_Label" Grid.Row="2" FontSize="30" TextColor="#F7931A" HorizontalOptions="Center" Margin="0,10,0,0"/>
+                    <Label x:Name="ConvertToUsd_Label" Grid.Row="3" FontSize="20" TextColor="#fff" HorizontalOptions="Center" Margin="0,10,0,0"/>
 
                     <Button Grid.Row="4" Clicked="refresh_clicked" ImageSource="refresh.png" BackgroundColor="Transparent"></Button>
 

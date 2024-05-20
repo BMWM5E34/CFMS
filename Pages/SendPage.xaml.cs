@@ -1,4 +1,6 @@
 using Crypto;
+using Microsoft.Maui.Controls;
+using System;
 using System.Globalization;
 
 namespace CFMS
@@ -15,41 +17,45 @@ namespace CFMS
         {
             if (string.IsNullOrWhiteSpace(AddressEntry.Text) ||
                 string.IsNullOrWhiteSpace(AmountEntry.Text) ||
-                NetworkPicker.SelectedIndex == -1 ||
-                string.IsNullOrWhiteSpace(FeeEntry.Text))
+                NetworkPicker.SelectedIndex == -1)
             {
                 await DisplayAlert("Error", "Please fill in all fields.", "OK");
                 return;
             }
 
             string address = AddressEntry.Text;
-            double amount = double.Parse(AmountEntry.Text, CultureInfo.InvariantCulture);
-            string network = NetworkPicker.SelectedItem.ToString();
-            double fee = double.Parse(FeeEntry.Text, CultureInfo.InvariantCulture);
+            double amount;
+            if (!double.TryParse(AmountEntry.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out amount))
+            {
+                await DisplayAlert("Error", "Invalid amount format.", "OK");
+                return;
+            }
 
-            string message = $"Address: {address}\nAmount: {amount}\nNetwork: {network}\nFee: {fee}";
+            string network = NetworkPicker.SelectedItem.ToString();
+
+            string message = $"Address: {address}\nAmount: {amount}\nNetwork: {network}";
             bool result = await DisplayAlert("Confirm sending", message, "Cancel", "OK");
 
             if (!result)
             {
                 // User confirmed sending
                 // Perform sending operation here
-                DisplayAlert("Sending", "Bitcoin sent successfully!", "OK");
+                await DisplayAlert("Sending", "Bitcoin sent successfully!", "OK");
+
+                await Navigation.PushAsync(new WalletPage());
             }
             else
             {
                 // User canceled sending
-                DisplayAlert("Cancelled", "Sending operation cancelled.", "OK");
+                await DisplayAlert("Cancelled", "Sending operation cancelled.", "OK");
             }
         }
-
 
         private void OnEntryChanged(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(AddressEntry.Text) &&
                 double.TryParse(AmountEntry.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out _) &&
-                NetworkPicker.SelectedIndex != -1 &&
-                double.TryParse(FeeEntry.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out _))
+                NetworkPicker.SelectedIndex != -1)
             {
                 SendBitcoinButton.IsEnabled = true;
             }
@@ -58,6 +64,5 @@ namespace CFMS
                 SendBitcoinButton.IsEnabled = false;
             }
         }
-
     }
 }

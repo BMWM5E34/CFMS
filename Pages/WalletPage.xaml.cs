@@ -2,6 +2,7 @@
 using CFMS.Models;
 using CFMS.Crypto;
 using Crypto;
+using CFMS.Pages;
 
 namespace CFMS
 {
@@ -9,7 +10,10 @@ namespace CFMS
     {
         public WalletPage()
         {
-            
+            string MnemonicPhrase = User.GetUserMnemonic();
+            btc.GenerateBitcoinAddressFromSeed(MnemonicPhrase);
+            User.GetAddress("bitcoin");
+
             InitializeComponent();
             DisplayProfileName();
             DisplayBalance();
@@ -31,7 +35,7 @@ namespace CFMS
         {
             try
             {
-                decimal rate = Bitcoin.GetRateBtc();
+                decimal rate = btc.GetRateBtc();
                 //decimal rate = 64000;
                 string str_btc_balance = Balance_Label.Text;
 
@@ -67,11 +71,11 @@ namespace CFMS
         {
             try
             {
-                string bitcoinAddress = Other.GetAddress("bitcoin");
+                string bitcoinAddress = User.GetAddress("bitcoin");
 
                 if (bitcoinAddress != null)
                 {
-                    decimal balance = Bitcoin.GetBitcoinBalance(bitcoinAddress);
+                    decimal balance = User.GetBalance(bitcoinAddress);
                     //double balance = 0.00011765;
 
                     if (Balance_Label != null)
@@ -93,9 +97,9 @@ namespace CFMS
                 Balance_Label.Text = $"Error, {ex.Message}";
             }
         }
-        private void Settings_clicked(object sender, EventArgs e)
+        private async void Settings_clicked(object sender, EventArgs e)
         {
-
+            await Navigation.PushAsync(new SettingsPage());
         }
         private void refresh_clicked(object sender, EventArgs e)
         {
@@ -117,9 +121,10 @@ namespace CFMS
             try
             {
                 string MnemonicPhrase = User.GetUserMnemonic();
-                string BTCaddress = Other.GetAddress("bitcoin");
+                btc.GenerateBitcoinAddressFromSeed(MnemonicPhrase);
+
+                string BTCaddress = User.GetAddress("bitcoin");
                 DisplayAlert("Bitcoin address", BTCaddress, "Copy");
-                Bitcoin.GenerateBitcoinAddressFromSeed(MnemonicPhrase);
 
                 Clipboard.SetTextAsync(BTCaddress);
             }
