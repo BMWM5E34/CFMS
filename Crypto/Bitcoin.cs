@@ -3,45 +3,32 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 using CFMS.Crypto;
-using System.Net;
+using System.Net;   
 using NBitcoin.Protocol;
 using CFMS;
 using System.Security.Policy;
+using Newtonsoft.Json.Linq;
+
 
 namespace Crypto
 {
-    public class Bitcoin
+    public class btc
     {
-        private static Network networkType = Network.TestNet;
+        private static Network network = Network.TestNet;
+
+        public static string GenerateMnemonicPhrase()
+        {
+            Mnemonic mnemonic = new Mnemonic(Wordlist.English, WordCount.Twelve);
+            return mnemonic.ToString();
+        }
         public static void GenerateBitcoinAddressFromSeed(string mnemonicPhrase)
         {
             ExtKey extendedKey = new Mnemonic(mnemonicPhrase).DeriveExtKey();
 
             var publicKey = extendedKey.PrivateKey.PubKey;
-            var address = publicKey.GetAddress(ScriptPubKeyType.Segwit, networkType);
+            var address = publicKey.GetAddress(ScriptPubKeyType.Legacy, network);
 
             Other.WriteAddressToJson("bitcoin", address.ToString());
-        }
-        public static decimal GetBitcoinBalance(string bitcoinAddress)
-        {
-            string url = $"https://blockstream.info/testnet/api/address/{bitcoinAddress}/utxo";
-
-            using (WebClient client = new WebClient())
-            {
-                string json = client.DownloadString(url);
-                dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-
-                decimal totalBalance = 0;
-                foreach (var utxo in data)
-                {
-                    decimal utxoValue = (decimal)utxo["value"];
-                    totalBalance += utxoValue;
-                }
-
-                totalBalance /= 100000000;
-
-                return totalBalance;
-            }
         }
 
         public static Key GenerateKeyFromMnemonic(string mnemonicPhrase)
@@ -67,7 +54,7 @@ namespace Crypto
                     decimal rate = data["USD"]["15m"];
                     
 
-                    return rate;
+                    return rate;    
                 }
             }
             catch (Exception ex)
@@ -76,9 +63,40 @@ namespace Crypto
                 return -1;
             }
         }
-        public static void SendBitcoin(string senderPrivateKey, string receiverAddress, decimal amountToSend)
+        public static async Task<(string txHash, int outputIndex, Money value)?> GetPrevOuts(string senderAddress, string blockcypherApiKey)
         {
+            using (var httpClient = new HttpClient())
+            {
+                string url = $"https://api.blockcypher.com/v1/btc/test3/addrs/{senderAddress}?token={blockcypherApiKey}";
 
+                var response = await httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
+                    var json = JObject.Parse(jsonResponse);
+
+                    if (json["txrefs"] != null)
+                    {
+                        var tx = json["txrefs"].First;
+                        if (tx != null)
+                        {
+                            var txHash = tx["tx_hash"].ToString();
+                            var outputIndex = tx["tx_output_n"].ToObject<int>();
+                            var value = Money.Satoshis(tx["value"].ToObject<long>());
+
+                            return (txHash, outputIndex, value);
+                        }
+                    }
+                    return null;
+                }
+                else
+                {
+                    Console.WriteLine("Error retrieving transaction history:");
+                    Console.WriteLine(response.ReasonPhrase);
+                    return null;
+                }
+            }
         }
     }
 }
