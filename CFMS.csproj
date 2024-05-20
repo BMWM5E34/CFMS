@@ -73,16 +73,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\CreateUserWalletPage.xaml.cs">
+	    <DependentUpon>CreateUserWalletPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\RestoreWalletPage.xaml.cs">
+	    <DependentUpon>RestoreWalletPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\WalletPage.xaml.cs">
 	    <DependentUpon>WalletPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\ExistingWalletPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\ImportWalletPage.xaml">
+	  <MauiXaml Update="Pages\RestoreWalletPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\LoginPage.xaml">

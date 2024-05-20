@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using Newtonsoft.Json;
-using CFMS.Crypto;
 using CFMS.Models;
 using System.Net;   
 using NBitcoin.Protocol;
@@ -66,12 +65,11 @@ namespace Crypto
             }
         }
 
-        public static async Task SendTransaction(Network network, string receiverAddress, decimal amountToSend)
+        public static async Task SendTransaction(Network network, string receiverAddress, decimal amountToSend, decimal feeAmount)
         {
             string blockcypherApiKey = btc.blockcypherApiKey;
             string senderAddress = User.GetUserAddress("bitcoin");
             string mnemonic = User.GetUserMnemonic();
-
 
             var prevOutDate = await GetPrevOuts(senderAddress, blockcypherApiKey);
             var (txHash, outputIndex, inputValue) = prevOutDate.Value;
@@ -88,7 +86,7 @@ namespace Crypto
 
             var destination = BitcoinAddress.Create(receiverAddress, network);
             var amount = Money.Coins(amountToSend);
-            var fee = Money.Satoshis(5000);
+            var fee = Money.Satoshis(feeAmount);
 
             Console.WriteLine($"Send: {amount} BTC");
             Console.WriteLine($"Fee: {fee.ToDecimal(MoneyUnit.BTC)} BTC");

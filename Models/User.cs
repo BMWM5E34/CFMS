@@ -15,11 +15,11 @@ namespace CFMS.Models
         private string Password { get; set; }
         [JsonProperty]
         private string MnemonicPhrase { get; set; }
-        public User(string username, string password)
+        public User(string username, string password, string mnemonicPhrase = null)
         {
             Username = username;
             Password = password;
-            MnemonicPhrase = btc.GenerateMnemonicPhrase();
+            MnemonicPhrase = mnemonicPhrase ?? btc.GenerateMnemonicPhrase();
         }
 
         public static string GetUsername()

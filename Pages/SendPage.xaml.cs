@@ -25,15 +25,15 @@ namespace CFMS
             }
 
             string address = AddressEntry.Text;
-            double amount;
-            if (!double.TryParse(AmountEntry.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out amount))
+            decimal amount;
+            if (!decimal.TryParse(AmountEntry.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out amount))
             {
                 await DisplayAlert("Error", "Invalid amount format.", "OK");
                 return;
             }
 
-            double fee;
-            if (!double.TryParse(FeeEntry.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out fee))
+            decimal fee;
+            if (!decimal.TryParse(FeeEntry.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out fee))
             {
                 await DisplayAlert("Error", "Invalid fee format.", "OK");
                 return;
@@ -47,13 +47,13 @@ namespace CFMS
                 // User confirmed sending
                 try
                 {
-                    string amount = Convert.ToDecimal(amount);
-                    await btc.SendTransaction(btc.network, address, AmountToSend);
+                    await btc.SendTransaction(btc.network, address, amount, fee);
                     await DisplayAlert("Success", "Bitcoin sent successfully!", "OK");
                     await Navigation.PushAsync(new WalletPage());
                 }
                 catch (Exception ex)
                 {
+                    // Display the error message
                     await DisplayAlert("Error", $"Failed to send Bitcoin: {ex.Message}", "OK");
                 }
             }

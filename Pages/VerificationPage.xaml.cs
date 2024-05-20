@@ -27,9 +27,9 @@ public partial class VerificationPage : ContentPage
             ErrorMessage.Text = "Incorrect password. Please try again.";
         }
     }
-    private async void OnRestoreClicked(object sender, EventArgs e)
+    private void OnRestoreClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new ImportWalletPage());
+        Application.Current.MainPage = new RestoreWalletPage();
     }
     private void OnQuitClicked(object sender, EventArgs e)
     {
