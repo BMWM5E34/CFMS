@@ -12,7 +12,7 @@ namespace CFMS
         {
             string MnemonicPhrase = User.GetUserMnemonic();
             btc.GenerateBitcoinAddressFromSeed(MnemonicPhrase);
-            User.GetAddress("bitcoin");
+            User.GetUserAddress("bitcoin");
 
             InitializeComponent();
             DisplayProfileName();
@@ -71,7 +71,7 @@ namespace CFMS
         {
             try
             {
-                string bitcoinAddress = User.GetAddress("bitcoin");
+                string bitcoinAddress = User.GetUserAddress("bitcoin");
 
                 if (bitcoinAddress != null)
                 {
@@ -123,7 +123,7 @@ namespace CFMS
                 string MnemonicPhrase = User.GetUserMnemonic();
                 btc.GenerateBitcoinAddressFromSeed(MnemonicPhrase);
 
-                string BTCaddress = User.GetAddress("bitcoin");
+                string BTCaddress = User.GetUserAddress("bitcoin");
                 DisplayAlert("Bitcoin address", BTCaddress, "Copy");
 
                 Clipboard.SetTextAsync(BTCaddress);

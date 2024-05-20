@@ -15,8 +15,9 @@ namespace Crypto
 {
     public class btc
     {
-        private static Network network = Network.TestNet;
+        public static Network network = Network.TestNet;
 
+        private static readonly string blockcypherApiKey = "2ecd9a86427048389c23c17b106ffec9";
         public static string GenerateMnemonicPhrase()
         {
             Mnemonic mnemonic = new Mnemonic(Wordlist.English, WordCount.Twelve);
@@ -64,13 +65,23 @@ namespace Crypto
                 return -1;
             }
         }
-        static async Task SendTransaction(Network network, string senderSecretKey, string senderAddress, string receiverAddress, decimal amountToSend, string prevOutHex, int prevOutIndex, Money inputValue, string blockcypherApiKey)
-        {
 
-            var secret = new BitcoinSecret(senderSecretKey, network);
+        public static async Task SendTransaction(Network network, string receiverAddress, decimal amountToSend)
+        {
+            string blockcypherApiKey = btc.blockcypherApiKey;
+            string senderAddress = User.GetUserAddress("bitcoin");
+            string mnemonic = User.GetUserMnemonic();
+
+
+            var prevOutDate = await GetPrevOuts(senderAddress, blockcypherApiKey);
+            var (txHash, outputIndex, inputValue) = prevOutDate.Value;
+
+            Key key = GenerateKeyFromMnemonic(mnemonic);
+
+            var secret = new BitcoinSecret(key, network);
             var tx = Transaction.Create(network);
 
-            var prevOut = new OutPoint(new uint256(prevOutHex), prevOutIndex);
+            var prevOut = new OutPoint(new uint256(txHash), outputIndex);
             var input = new TxIn(prevOut);
             input.ScriptSig = secret.PubKey.ScriptPubKey;
             tx.Inputs.Add(input);
@@ -93,7 +104,7 @@ namespace Crypto
                 tx.Outputs.Add(changeOutput);
             }
 
-            tx.Sign(secret, new Coin(new OutPoint(new uint256(prevOutHex), prevOutIndex), new TxOut(inputValue, BitcoinAddress.Create(senderAddress, network).ScriptPubKey)));
+            tx.Sign(secret, new Coin(new OutPoint(new uint256(txHash), outputIndex), new TxOut(inputValue, BitcoinAddress.Create(senderAddress, network).ScriptPubKey)));
 
             var txHex = tx.ToHex();
 

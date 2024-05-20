@@ -44,8 +44,8 @@ namespace CFMS.Models
             string json = JsonConvert.SerializeObject(user);
             File.WriteAllText(UtilsFunc.FilePath, json);
         }
-
-        public static string GetAddress(string coinName)
+            
+        public static string GetUserAddress(string coinName)
         {
             string directory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string filePath = Path.Combine(directory, "CFMS_Addresses.json");

@@ -1,3 +1,4 @@
+using CFMS.Models;
 using Crypto;
 using Microsoft.Maui.Controls;
 using System;
@@ -39,15 +40,22 @@ namespace CFMS
             }
 
             string message = $"Address: {address}\nAmount: {amount}\nFee: {fee}";
-            bool result = await DisplayAlert("Confirm sending", message, "Cancel", "OK");
+            bool result = await DisplayAlert("Confirm sending", message, "OK", "Cancel");
 
-            if (!result)
+            if (result)
             {
                 // User confirmed sending
-                // Perform sending operation here
-                await DisplayAlert("Sending", "Bitcoin sent successfully!", "OK");
-
-                await Navigation.PushAsync(new WalletPage());
+                try
+                {
+                    string amount = Convert.ToDecimal(amount);
+                    await btc.SendTransaction(btc.network, address, AmountToSend);
+                    await DisplayAlert("Success", "Bitcoin sent successfully!", "OK");
+                    await Navigation.PushAsync(new WalletPage());
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Error", $"Failed to send Bitcoin: {ex.Message}", "OK");
+                }
             }
             else
             {
