@@ -3,12 +3,13 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 using CFMS.Crypto;
+using CFMS.Models;
 using System.Net;   
 using NBitcoin.Protocol;
 using CFMS;
 using System.Security.Policy;
 using Newtonsoft.Json.Linq;
-
+using System.Text;
 
 namespace Crypto
 {
@@ -28,7 +29,7 @@ namespace Crypto
             var publicKey = extendedKey.PrivateKey.PubKey;
             var address = publicKey.GetAddress(ScriptPubKeyType.Legacy, network);
 
-            Other.WriteAddressToJson("bitcoin", address.ToString());
+            UtilsFunc.WriteAddressToJson("bitcoin", address.ToString());
         }
 
         public static Key GenerateKeyFromMnemonic(string mnemonicPhrase)
@@ -63,6 +64,58 @@ namespace Crypto
                 return -1;
             }
         }
+        static async Task SendTransaction(Network network, string senderSecretKey, string senderAddress, string receiverAddress, decimal amountToSend, string prevOutHex, int prevOutIndex, Money inputValue, string blockcypherApiKey)
+        {
+
+            var secret = new BitcoinSecret(senderSecretKey, network);
+            var tx = Transaction.Create(network);
+
+            var prevOut = new OutPoint(new uint256(prevOutHex), prevOutIndex);
+            var input = new TxIn(prevOut);
+            input.ScriptSig = secret.PubKey.ScriptPubKey;
+            tx.Inputs.Add(input);
+
+            var destination = BitcoinAddress.Create(receiverAddress, network);
+            var amount = Money.Coins(amountToSend);
+            var fee = Money.Satoshis(5000);
+
+            Console.WriteLine($"Send: {amount} BTC");
+            Console.WriteLine($"Fee: {fee.ToDecimal(MoneyUnit.BTC)} BTC");
+
+            var output = new TxOut(amount, destination.ScriptPubKey);
+            tx.Outputs.Add(output);
+
+            var changeAmount = inputValue - amount - fee;
+            if (changeAmount > Money.Zero)
+            {
+                var changeAddress = secret.GetAddress(ScriptPubKeyType.Legacy);
+                var changeOutput = new TxOut(changeAmount, changeAddress.ScriptPubKey);
+                tx.Outputs.Add(changeOutput);
+            }
+
+            tx.Sign(secret, new Coin(new OutPoint(new uint256(prevOutHex), prevOutIndex), new TxOut(inputValue, BitcoinAddress.Create(senderAddress, network).ScriptPubKey)));
+
+            var txHex = tx.ToHex();
+
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+
+                var content = new StringContent("{\"tx\":\"" + txHex + "\"}", Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync($"https://api.blockcypher.com/v1/btc/test3/txs/push?token={blockcypherApiKey}", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Transaction sent successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Error sending transaction:");
+                    Console.WriteLine(await response.Content.ReadAsStringAsync());
+                }
+            }
+        }
+
         public static async Task<(string txHash, int outputIndex, Money value)?> GetPrevOuts(string senderAddress, string blockcypherApiKey)
         {
             using (var httpClient = new HttpClient())
