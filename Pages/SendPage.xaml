@@ -5,20 +5,11 @@
 
     <VerticalStackLayout Padding="20" VerticalOptions="Center" WidthRequest="500">
 
-        <Button Text="▼" TextColor="#fff" BackgroundColor="Transparent" Grid.Row="0" />
         <Image Source="btc.png" HeightRequest="80" WidthRequest="80" Margin="0,0,0,50"/>
-
 
         <Entry x:Name="AddressEntry" Placeholder="Bitcoin Address" Margin="0,0,0,20" TextChanged="OnEntryChanged" />
         <Entry x:Name="AmountEntry" Placeholder="Amount" Margin="0,0,0,20" TextChanged="OnEntryChanged" Keyboard="Numeric" />
-        <Picker x:Name="NetworkPicker" Title="Select Network" Margin="0,0,0,20">
-            <Picker.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>TestNet</x:String>
-                    <x:String>Bitcoin</x:String>
-                </x:Array>
-            </Picker.ItemsSource>
-        </Picker>
+        <Entry x:Name="FeeEntry" Placeholder="Fee" Margin="0,0,0,20" TextChanged="OnEntryChanged" Keyboard="Numeric" />
 
         <Button x:Name="SendBitcoinButton" BackgroundColor="#F7931A" Text="Send Bitcoin" Clicked="OnSendBTCClicked" TextColor="#fff"/>
     </VerticalStackLayout>

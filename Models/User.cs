@@ -24,25 +24,25 @@ namespace CFMS.Models
 
         public static string GetUsername()
         {
-            User user = Utils.LoadFromJson();
+            User user = UtilsFunc.LoadFromJson();
             return user.Username;
         }
 
         public static string GetUserPassword()
         {
-            User user = Utils.LoadFromJson();
+            User user = UtilsFunc.LoadFromJson();
             return user.Password;
         }
 
         public static string GetUserMnemonic()
         {
-            User user = Utils.LoadFromJson();
+            User user = UtilsFunc.LoadFromJson();
             return user.MnemonicPhrase;
         }
         public static void SaveUser(User user)
         {
             string json = JsonConvert.SerializeObject(user);
-            File.WriteAllText(Utils.FilePath, json);
+            File.WriteAllText(UtilsFunc.FilePath, json);
         }
 
         public static string GetAddress(string coinName)
